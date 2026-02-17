@@ -1,0 +1,1664 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Formulario de Solicitud - SALMAPLAST</title>
+
+  <style>
+    :root{
+      --blue:#283C6F;
+      --blue2:#364A74;
+      --green:#6AA842;
+      --bg:#F4F6FB;
+      --paper:#FFFFFF;
+      --text:#0F172A;
+      --muted:#475569;
+      --line:#B7C3DA;
+      --line2:#D7DEEC;
+      --radius:10px;
+      --shadow: 0 10px 24px rgba(17, 24, 39, .10);
+      --ok:#1F9D5A;
+      --bad:#D43C3C;
+      --warn:#A66A00;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: Arial, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: linear-gradient(180deg, var(--bg), #fff 55%, var(--bg));
+      color:var(--text);
+      padding:22px 12px 40px;
+    }
+    .wrap{ max-width:1180px; margin:0 auto; }
+    .hidden{ display:none !important; }
+
+    header{
+      background: var(--paper);
+      border:2px solid var(--blue);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:14px 14px 12px;
+      margin-bottom:12px;
+      position:relative;
+      overflow:hidden;
+    }
+    header::after{
+      content:"";
+      position:absolute; left:0; right:0; bottom:0; height:10px;
+      background: linear-gradient(90deg, var(--green) 0 18%, var(--blue) 18% 82%, var(--green) 82% 100%);
+    }
+
+    .brand{
+      display:grid;
+      grid-template-columns: 240px 1fr auto;
+      gap:12px;
+      align-items:center;
+    }
+    @media (max-width: 900px){ .brand{ grid-template-columns:1fr; } }
+
+    .brand-left{ display:flex; align-items:center; gap:10px; min-height:72px; }
+    .brand-logo{ width:220px; height:auto; max-height:70px; object-fit:contain; }
+    .logo-fallback{ font-weight:900; color: var(--blue); letter-spacing:.6px; font-size:18px; }
+
+    .brand-title{ text-align:center; }
+    .brand-title h1{ margin:0; font-size:18px; color: var(--blue); letter-spacing:.3px; font-weight:800; }
+    .brand-title p{ margin:4px 0 0; color: var(--muted); font-size:12px; }
+
+    .top-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      align-items:center;
+    }
+    @media (max-width: 900px){
+      .brand-title{ text-align:left; }
+      .top-actions{ justify-content:flex-start; }
+    }
+
+    .btn{
+      border:2px solid var(--blue);
+      background:#fff;
+      color: var(--blue);
+      padding:9px 12px;
+      border-radius: 10px;
+      cursor:pointer;
+      font-weight:800;
+      transition: .12s filter ease, .12s transform ease;
+      white-space:nowrap;
+    }
+    .btn:hover{ filter: brightness(.98); transform: translateY(-1px); }
+    .btn.primary{ background: var(--blue); color:#fff; }
+    .btn.ghost{ border-color: var(--line); color: var(--muted); }
+
+    .btn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+      transform:none !important;
+      filter:none !important;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .grid{ grid-template-columns:1fr; } }
+
+    .card{
+      background: var(--paper);
+      border:2px solid var(--blue);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:10px 12px;
+      border-bottom:1px solid var(--line2);
+      background:#F7FAFF;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+    .card .hd strong{ color: var(--blue); font-size:13px; letter-spacing:.2px; }
+    .card .bd{ padding:12px; }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line2);
+      background:#fff;
+      color: var(--muted);
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    @media (max-width: 640px){ .row{ grid-template-columns:1fr; } }
+
+    label{
+      display:block;
+      font-size:12px;
+      color: var(--blue2);
+      font-weight:800;
+      margin:0 0 6px;
+    }
+    .req::after{ content:" *"; color: var(--green); }
+
+    input, select, textarea{
+      width:100%;
+      padding:9px 10px;
+      border-radius:8px;
+      border:1px solid var(--line);
+      background:#fff;
+      color: var(--text);
+      outline:none;
+    }
+    textarea{ min-height: 86px; resize: vertical; }
+    input:focus, select:focus, textarea:focus{
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(40,60,111,.15);
+    }
+
+    .hint{ font-size:11px; color: var(--muted); margin-top:6px; line-height:1.35; }
+
+    .seg{ display:flex; gap:8px; flex-wrap:wrap; }
+    .seg input{ display:none; }
+    .seg label{
+      margin:0;
+      cursor:pointer;
+      user-select:none;
+      padding:9px 10px;
+      border-radius:10px;
+      border:1px solid var(--line);
+      background:#fff;
+      color: var(--blue);
+      font-weight:800;
+      transition:.12s transform ease, .12s filter ease, .12s border ease;
+    }
+    .seg input:checked + label{
+      border-color: var(--blue);
+      background:#EFF4FF;
+      transform: translateY(-1px);
+    }
+
+    .checks{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top:6px;
+    }
+    @media (max-width: 640px){ .checks{ grid-template-columns:1fr; } }
+
+    .check{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:10px 10px;
+      border-radius:10px;
+      border:1px solid var(--line2);
+      background:#fff;
+    }
+    .check input{ width:auto; margin-top:3px; }
+    .check small{ display:block; color: var(--muted); margin-top:2px; }
+
+    .section{
+      margin-top:12px;
+      padding-top:12px;
+      border-top:1px solid var(--line2);
+    }
+    .section-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin:0 0 10px;
+      font-size:13px;
+      color: var(--blue);
+      font-weight:900;
+      letter-spacing:.2px;
+    }
+    .badge{
+      font-size:11px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(40,60,111,.35);
+      color: var(--blue);
+      background:#F4F7FF;
+      font-weight:800;
+    }
+
+    .alert{
+      border-radius:10px;
+      padding:10px 12px;
+      border:1px solid var(--line2);
+      background:#fff;
+      font-size:12px;
+      color: var(--muted);
+      line-height:1.35;
+    }
+    .alert.ok{ border-color: rgba(31,157,90,.35); color:#0b3a22; background: rgba(31,157,90,.08); }
+    .alert.bad{ border-color: rgba(212,60,60,.35); color:#4a0c0c; background: rgba(212,60,60,.08); }
+    .alert.warn{ border-color: rgba(166,106,0,.35); color:#4b3200; background: rgba(166,106,0,.08); }
+
+    .summary{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size:12px;
+      background:#FAFBFF;
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:10px;
+      max-height: 460px;
+      overflow:auto;
+      white-space:pre-wrap;
+    }
+
+    /* PRINT: header + resumen, título alineado derecha y a la altura del logo */
+    @media print{
+      body{ background:#fff !important; padding:0 !important; }
+      .grid > .card:not(#cardResumen){ display:none !important; }
+      .grid{ grid-template-columns:1fr !important; }
+
+      header{ display:block !important; box-shadow:none !important; margin:0 0 10px !important; }
+      .top-actions{ display:none !important; }
+
+      .brand{
+        grid-template-columns: 240px 1fr !important;
+        align-items:center !important;
+      }
+      .brand-title{
+        text-align:right !important;
+        align-self:center !important;
+      }
+
+      #cardResumen{ border:1px solid #ddd !important; box-shadow:none !important; }
+      #cardResumen .summary{ max-height:none !important; overflow:visible !important; }
+      #cardResumen .row{ display:none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <header>
+      <div class="brand">
+        <div class="brand-left">
+          <img id="brandLogo" class="brand-logo" alt="SALMAPLAST logo" />
+          <div id="brandLogoFallback" class="logo-fallback hidden">SALMAPLAST</div>
+        </div>
+
+        <div class="brand-title">
+          <h1>FORMULARIO DE SOLICITUD</h1>
+          <p>Seleccione el tipo de producto y complete los datos para muestra / cotización.</p>
+        </div>
+
+        <div class="top-actions">
+          <button class="btn ghost" id="btnLimpiar" type="button">Limpiar</button>
+          <button class="btn primary" id="btnGenerar" type="button">Generar resumen</button>
+          <button class="btn primary" id="btnPDF" type="button">Exportar PDF</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- FORM -->
+      <div class="card">
+        <div class="hd">
+          <strong>Datos de la solicitud</strong>
+          <span class="pill">Estado: <span id="estadoForm">Pendiente</span></span>
+        </div>
+        <div class="bd">
+          <form id="formSolicitud" autocomplete="on">
+
+            <div class="section-title" style="margin-top:0;">
+              <span>Información general</span>
+              <span class="badge">obligatorio</span>
+            </div>
+
+            <div class="row">
+              <div>
+                <label class="req" for="fechaSolicitud">Fecha</label>
+                <input id="fechaSolicitud" name="fechaSolicitud" type="date" required />
+              </div>
+              <div>
+                <label class="req" for="ejecutiva">Ejecutiva a cargo</label>
+                <input id="ejecutiva" name="ejecutiva" type="text" placeholder="Ej: María Pérez" required />
+              </div>
+            </div>
+
+            <div class="row">
+              <div>
+                <label class="req" for="solicitante">Solicitante</label>
+                <input id="solicitante" name="solicitante" type="text" placeholder="Nombre y apellido" required />
+              </div>
+              <div>
+                <label for="contacto">Contacto (correo / teléfono)</label>
+                <input id="contacto" name="contacto" type="text" placeholder="correo@cliente.com / 999 999 999" />
+              </div>
+            </div>
+
+            <div class="row">
+              <div>
+                <label class="req" for="empresa">Cliente / Empresa</label>
+                <input id="empresa" name="empresa" type="text" placeholder="Razón social / Marca" required />
+              </div>
+              <div>
+                <label for="oc">OC / Referencia</label>
+                <input id="oc" name="oc" type="text" placeholder="Orden de compra / N° cotización / referencia" />
+              </div>
+            </div>
+
+            <div class="row">
+              <div>
+                <label for="prioridad">Prioridad</label>
+                <select id="prioridad" name="prioridad">
+                  <option value="Normal" selected>Normal</option>
+                  <option value="Alta">Alta</option>
+                  <option value="Urgente">Urgente</option>
+                </select>
+              </div>
+              <div>
+                <label for="sectorProducto">Sector destinado del producto</label>
+                <select id="sectorProducto" name="sectorProducto">
+                  <option value="Alimentos y bebidas" selected>Alimentos y bebidas</option>
+                  <option value="Farmacéutico">Farmacéutico</option>
+                  <option value="Cosmética / cuidado personal">Cosmética / cuidado personal</option>
+                  <option value="Químicos / limpieza">Químicos / limpieza</option>
+                  <option value="Industrial">Industrial</option>
+                  <option value="Otro">Otro</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div>
+                <label class="req">Tipo de producto</label>
+                <div class="seg" role="radiogroup">
+                  <input id="tpTermo" type="radio" name="tipoProducto" value="Termoencogible" required />
+                  <label for="tpTermo">Termoencogible</label>
+
+                  <input id="tpPrecinto" type="radio" name="tipoProducto" value="Precintos de seguridad" />
+                  <label for="tpPrecinto">Precintos</label>
+
+                  <input id="tpLiner" type="radio" name="tipoProducto" value="Liner" />
+                  <label for="tpLiner">Liner</label>
+                </div>
+                <div class="hint">El formulario mostrará solo lo necesario según el producto elegido.</div>
+              </div>
+
+              <div>
+                <label for="observacionesGenerales">Observaciones generales</label>
+                <textarea id="observacionesGenerales" name="observacionesGenerales"
+                  placeholder="Notas generales, urgencia, restricciones, etc."></textarea>
+              </div>
+            </div>
+
+            <!-- TERMO -->
+            <div class="section hidden" id="secTermo">
+              <div class="section-title">
+                <span>Termoencogible</span>
+                <span class="badge">flujo optimizado</span>
+              </div>
+
+              <!-- 1) Tipo / lámina -->
+              <div class="row">
+                <div>
+                  <label class="req" for="t_tipoTermo">Tipo dentro de termoencogible</label>
+                  <select id="t_tipoTermo" name="t_tipoTermo" required>
+                    <option value="Funda" selected>Funda (Sleeve)</option>
+                    <option value="Precinto termoencogible">Precinto termoencogible (tapas / gas)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="req" for="t_laminaTipo">Tipo de lámina</label>
+                  <select id="t_laminaTipo" name="t_laminaTipo" required>
+                    <option value="Lámina abierta" selected>Lámina abierta (con pega)</option>
+                    <option value="Lámina extruida (tubular)">Lámina extruida (tubular, sin pega)</option>
+                  </select>
+                  <div class="hint">Ayuda a definir el armado de la muestra y el comportamiento al encoger.</div>
+                </div>
+              </div>
+
+              <!-- 2) Cliente -->
+              <div class="row">
+                <div>
+                  <label class="req">Experiencia del cliente con termoencogible</label>
+                  <div class="seg">
+                    <input id="t_exp_si" type="radio" name="t_experiencia" value="Sí" required />
+                    <label for="t_exp_si">Sí</label>
+                    <input id="t_exp_no" type="radio" name="t_experiencia" value="No" />
+                    <label for="t_exp_no">No</label>
+                    <input id="t_exp_prim" type="radio" name="t_experiencia" value="Primera vez" />
+                    <label for="t_exp_prim">Primera vez</label>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="req">¿Cuenta con muestra física impresa?</label>
+                  <div class="seg">
+                    <input id="t_mf_si" type="radio" name="t_muestraFisica" value="Sí" required />
+                    <label for="t_mf_si">Sí</label>
+                    <input id="t_mf_no" type="radio" name="t_muestraFisica" value="No" />
+                    <label for="t_mf_no">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3) Proceso -->
+              <div class="row">
+                <div>
+                  <label class="req" for="t_termoCon">¿Con qué se termoencoge?</label>
+                  <select id="t_termoCon" name="t_termoCon" required>
+                    <option value="" disabled selected>Selecciona</option>
+                    <option value="Pistola de calor">Pistola de calor</option>
+                    <option value="Horno a vapor">Horno a vapor</option>
+                    <option value="Horno eléctrico">Horno eléctrico</option>
+                    <option value="Túnel termoencogible">Túnel termoencogible</option>
+                    <option value="Otros">Otros (especificar)</option>
+                  </select>
+
+                  <div class="hint hidden" id="t_termoCon_otros_wrap">
+                    <label for="t_termoCon_otros" class="req">Especificar “Otros”</label>
+                    <input id="t_termoCon_otros" name="t_termoCon_otros" type="text" />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="req">¿Tiene aplicador de etiquetas?</label>
+                  <div class="seg">
+                    <input id="t_apli_si" type="radio" name="t_aplicador" value="Sí" required />
+                    <label for="t_apli_si">Sí</label>
+                    <input id="t_apli_no" type="radio" name="t_aplicador" value="No" />
+                    <label for="t_apli_no">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div>
+                  <label class="req" for="t_selladoTipo">Tipo de aplicación / sellado</label>
+                  <select id="t_selladoTipo" name="t_selladoTipo" required>
+                    <option value="Manual" selected>Manual</option>
+                    <option value="Automática">Automática</option>
+                    <option value="Mixta">Mixta</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="req">¿Se debe imprimir TACA?</label>
+                  <div class="seg">
+                    <input id="t_taca_si" type="radio" name="t_taca" value="Sí" required />
+                    <label for="t_taca_si">Sí</label>
+                    <input id="t_taca_no" type="radio" name="t_taca" value="No" />
+                    <label for="t_taca_no">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4) Especificaciones -->
+              <div class="row">
+                <div>
+                  <label class="req" for="t_ancho">Ancho (mm)</label>
+                  <input id="t_ancho" name="t_ancho" type="number" min="1" step="0.1" required />
+                </div>
+                <div>
+                  <label class="req" for="t_avance">Avance (mm)</label>
+                  <input id="t_avance" name="t_avance" type="number" min="1" step="0.1" required />
+                </div>
+              </div>
+
+              <div class="row">
+                <div>
+                  <label class="req" for="t_material">Material</label>
+                  <select id="t_material" name="t_material" required>
+                    <option value="PVC">PVC</option>
+                    <option value="PETG" selected>PETG</option>
+                    <option value="Otros">Otros (especificar)</option>
+                  </select>
+
+                  <div class="hint hidden" id="t_material_otros_wrap">
+                    <label for="t_material_otros" class="req">Especificar “Otros”</label>
+                    <input id="t_material_otros" name="t_material_otros" type="text" />
+                  </div>
+                </div>
+
+                <div>
+                  <label for="t_calibre">Calibre / espesor (micras)</label>
+                  <select id="t_calibre" name="t_calibre">
+                    <option value="40">40</option>
+                    <option value="45">45</option>
+                    <option value="50" selected>50</option>
+                    <option value="55">55</option>
+                    <option value="60">60</option>
+                    <option value="Otro">Otro (detallar)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- 5) Impresión -->
+              <div class="row">
+                <div>
+                  <label class="req" for="t_colores">Colores a imprimir (cantidad)</label>
+                  <input id="t_colores" name="t_colores" type="number" min="1" step="1" required />
+                </div>
+                <div>
+                  <label for="t_sistemaColor">Sistema de color</label>
+                  <select id="t_sistemaColor" name="t_sistemaColor">
+                    <option value="CMYK" selected>CMYK</option>
+                    <option value="Pantone / Spot">Pantone / Spot</option>
+                    <option value="CMYK + Spot">CMYK + Spot</option>
+                    <option value="No definido">No definido</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- 6) Funda: tratamientos -->
+              <div class="section" id="secTermoFunda">
+                <div class="section-title">
+                  <span>Tratamientos (solo funda)</span>
+                  <span class="badge">checks</span>
+                </div>
+
+                <div class="checks">
+                  <div class="check">
+                    <input type="checkbox" id="t_barniz_mate" name="t_funda_checks" value="Barniz mate" />
+                    <div><b>Barniz mate</b><small>Acabado mate/antibrillo.</small></div>
+                  </div>
+                  <div class="check">
+                    <input type="checkbox" id="t_primer" name="t_funda_checks" value="Primer" />
+                    <div><b>Primer</b><small>Mejora adherencia / anclaje.</small></div>
+                  </div>
+                  <div class="check">
+                    <input type="checkbox" id="t_adhesivo" name="t_funda_checks" value="Adhesivo" />
+                    <div><b>Adhesivo</b><small>Para condición especial.</small></div>
+                  </div>
+                  <div class="check">
+                    <input type="checkbox" id="t_sin_trat" name="t_funda_checks" value="Sin tratamiento" />
+                    <div><b>Sin tratamiento</b><small>Si no requiere.</small></div>
+                  </div>
+                </div>
+
+                <div style="height:10px"></div>
+
+                <div class="row">
+                  <div>
+                    <label for="t_envase">Envase (referencia)</label>
+                    <select id="t_envase" name="t_envase">
+                      <option value="Botella PET" selected>Botella PET</option>
+                      <option value="Vidrio">Vidrio</option>
+                      <option value="Lata">Lata</option>
+                      <option value="Otro">Otro</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="t_envaseDisponibilidad">¿Hay envase físico para prueba?</label>
+                    <select id="t_envaseDisponibilidad" name="t_envaseDisponibilidad">
+                      <option value="Sí" selected>Sí</option>
+                      <option value="No">No</option>
+                      <option value="En camino">En camino</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 7) Precinto termo -->
+              <div class="section hidden" id="secTermoPrecinto">
+                <div class="section-title">
+                  <span>Detalle (Precinto termoencogible)</span>
+                  <span class="badge">tapas / gas</span>
+                </div>
+
+                <div class="row">
+                  <div>
+                    <label class="req" for="tp_falda">Falda (mm)</label>
+                    <input id="tp_falda" name="tp_falda" type="number" min="0" step="0.1" />
+                  </div>
+                  <div>
+                    <label class="req" for="tp_pestana">Pestaña (mm)</label>
+                    <input id="tp_pestana" name="tp_pestana" type="number" min="0" step="0.1" />
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div>
+                    <label for="tp_tipoPrecinto">Tipo de precinto (termo)</label>
+                    <select id="tp_tipoPrecinto" name="tp_tipoPrecinto">
+                      <option value="Precinto tapa" selected>Precinto tapa</option>
+                      <option value="Precinto gas">Precinto gas</option>
+                      <option value="Otro">Otro</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="tp_obs">Observaciones precinto termoencogible</label>
+                    <textarea id="tp_obs" name="tp_obs"></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 8) Grafilado + Micro -->
+              <div class="section">
+                <div class="section-title">
+                  <span>Grafilado / Microperforado</span>
+                  <span class="badge">definir</span>
+                </div>
+
+                <div class="row">
+                  <div>
+                    <label class="req" for="t_grafiladoTipo">Grafilado</label>
+                    <select id="t_grafiladoTipo" name="t_grafiladoTipo" required>
+                      <option value="No" selected>No</option>
+                      <option value="Longitudinal">Longitudinal</option>
+                      <option value="Transversal">Transversal</option>
+                      <option value="Parcial">Parcial</option>
+                      <option value="Varios">Varios</option>
+                    </select>
+
+                    <div class="hint hidden" id="t_grafilado_det_wrap">
+                      <label for="t_grafilado_detalle" class="req">Detalle de grafilado</label>
+                      <textarea id="t_grafilado_detalle" name="t_grafilado_detalle"
+                        placeholder="Ubicación, cantidad de líneas, medida, referencia visual, etc."></textarea>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label class="req">Microperforado</label>
+                    <div class="seg">
+                      <input id="t_micro_si" type="radio" name="t_micro" value="Sí" required />
+                      <label for="t_micro_si">Sí</label>
+                      <input id="t_micro_no" type="radio" name="t_micro" value="No" />
+                      <label for="t_micro_no">No</label>
+                    </div>
+
+                    <div class="hint hidden" id="t_micro_wrap">
+                      <label for="t_micro_cantidad" class="req">Cantidad / patrón de microperforados</label>
+                      <input id="t_micro_cantidad" name="t_micro_cantidad" type="text"
+                        placeholder="Ej: 2 líneas, 1 por lado, patrón X, etc." />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 9) Muestra + Prueba + Observaciones -->
+              <div class="section">
+                <div class="section-title">
+                  <span>Muestra y validación</span>
+                  <span class="badge">final</span>
+                </div>
+
+                <div class="row">
+                  <div>
+                    <label for="t_muestraTipo">Tipo de muestra</label>
+                    <select id="t_muestraTipo" name="t_muestraTipo">
+                      <option value="Muestra impresa" selected>Muestra impresa</option>
+                      <option value="Dummy sin impresión">Dummy sin impresión</option>
+                      <option value="Solo prueba de material">Solo prueba de material</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="t_pruebaTunel">Prueba de túnel / encogido</label>
+                    <select id="t_pruebaTunel" name="t_pruebaTunel">
+                      <option value="Sí" selected>Sí</option>
+                      <option value="No">No</option>
+                      <option value="Cliente prueba">Cliente realiza prueba</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div>
+                    <label for="t_cantidadMuestra">Cantidad de muestra (unid.)</label>
+                    <input id="t_cantidadMuestra" name="t_cantidadMuestra" type="number" min="0" step="1" />
+                  </div>
+                  <div>
+                    <label for="t_observaciones">Observaciones termoencogible</label>
+                    <textarea id="t_observaciones" name="t_observaciones"
+                      placeholder="Ventana transparente, registro crítico, blancos, degradados, etc."></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PRECINTOS SEG -->
+            <div class="section hidden" id="secPrecinto">
+              <div class="section-title">
+                <span>Precintos de seguridad</span>
+                <span class="badge">modelos definidos</span>
+              </div>
+
+              <div class="row">
+                <div>
+                  <label class="req" for="ps_modelo">Modelo</label>
+                  <select id="ps_modelo" name="ps_modelo" required>
+                    <option value="" disabled selected>Selecciona</option>
+                    <option value="M">M</option>
+                    <option value="H">H</option>
+                    <option value="HL">HL</option>
+                    <option value="X">X</option>
+                    <option value="Bulldog">Bulldog</option>
+                    <option value="F">F</option>
+                    <option value="Metálico">Metálico</option>
+                    <option value="Rhino">Rhino</option>
+                    <option value="Otros">Otros (especificar)</option>
+                  </select>
+
+                  <div class="hint hidden" id="ps_modelo_otros_wrap">
+                    <label for="ps_modelo_otros" class="req">Especificar “Otros”</label>
+                    <input id="ps_modelo_otros" name="ps_modelo_otros" type="text" />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="req" for="ps_color">Color del precinto</label>
+                  <select id="ps_color" name="ps_color" required>
+                    <option value="Rojo" selected>Rojo</option>
+                    <option value="Azul">Azul</option>
+                    <option value="Verde">Verde</option>
+                    <option value="Amarillo">Amarillo</option>
+                    <option value="Naranja">Naranja</option>
+                    <option value="Negro">Negro</option>
+                    <option value="Blanco">Blanco</option>
+                    <option value="Transparente">Transparente</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div>
+                  <label class="req" for="ps_cable">Calibre de cable</label>
+                  <select id="ps_cable" name="ps_cable" required>
+                    <option value="No aplica">No aplica</option>
+                    <option value="1.5" selected>1.5</option>
+                    <option value="2.5">2.5</option>
+                    <option value="3.5">3.5</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="ps_cantidad">Cantidad requerida (unid.)</label>
+                  <input id="ps_cantidad" name="ps_cantidad" type="number" min="0" step="1" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div>
+                  <label class="req">Numeración / identificación</label>
+                  <div class="seg">
+                    <input id="ps_num_si" type="radio" name="ps_numeracion" value="Sí" required />
+                    <label for="ps_num_si">Sí</label>
+                    <input id="ps_num_no" type="radio" name="ps_numeracion" value="No" />
+                    <label for="ps_num_no">No</label>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="req" for="ps_seguridad">Nivel de seguridad</label>
+                  <select id="ps_seguridad" name="ps_seguridad" required>
+                    <option value="" disabled selected>Selecciona</option>
+                    <option value="Básico">Básico</option>
+                    <option value="Medio">Medio</option>
+                    <option value="Alto">Alto</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div>
+                  <label>Personalización (checks)</label>
+                  <div class="checks">
+                    <div class="check">
+                      <input type="checkbox" id="ps_logo" name="ps_personalizacion" value="Logo" />
+                      <div><b>Logo</b><small>Impresión del logo del cliente.</small></div>
+                    </div>
+                    <div class="check">
+                      <input type="checkbox" id="ps_texto" name="ps_personalizacion" value="Texto" />
+                      <div><b>Texto</b><small>Razón social / marca / frase.</small></div>
+                    </div>
+                    <div class="check">
+                      <input type="checkbox" id="ps_barcode" name="ps_personalizacion" value="Barcode/QR" />
+                      <div><b>Barcode / QR</b><small>Para escaneo.</small></div>
+                    </div>
+                    <div class="check">
+                      <input type="checkbox" id="ps_colorEsp" name="ps_personalizacion" value="Colores especiales" />
+                      <div><b>Colores especiales</b><small>Pantone / combinaciones.</small></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="ps_resistencia">Resistencia (1-5)</label>
+                  <input id="ps_resistencia" name="ps_resistencia" type="number" min="1" max="5" step="1" value="3" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div>
+                  <label for="ps_detalle">Detalle</label>
+                  <textarea id="ps_detalle" name="ps_detalle"></textarea>
+                </div>
+                <div>
+                  <label for="ps_obs">Observaciones precintos</label>
+                  <textarea id="ps_obs" name="ps_obs"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- LINER -->
+            <div class="section hidden" id="secLiner">
+              <div class="section-title">
+                <span>Liner</span>
+                <span class="badge">sellado de boca</span>
+              </div>
+
+              <div class="row">
+                <div>
+                  <label class="req" for="l_diametro">Diámetro (mm)</label>
+                  <input id="l_diametro" name="l_diametro" type="number" min="1" step="0.1" required />
+                </div>
+                <div>
+                  <label class="req" for="l_tipoEnvase">Tipo de envase</label>
+                  <select id="l_tipoEnvase" name="l_tipoEnvase" required>
+                    <option value="" disabled selected>Selecciona</option>
+                    <option value="Frasco plástico (HDPE/PET)">Frasco plástico (HDPE/PET)</option>
+                    <option value="Frasco vidrio">Frasco vidrio</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div>
+                  <label class="req" for="l_materialCodigo">Material (código)</label>
+                  <select id="l_materialCodigo" name="l_materialCodigo" required>
+                    <option value="" disabled selected>Selecciona</option>
+                    <option value="TPE-2020E">TPE-2020E</option>
+                    <option value="TPE-1517A">TPE-1517A</option>
+                    <option value="TPE-1520T">TPE-1520T</option>
+                    <option value="BP-517E">BP-517E</option>
+                    <option value="BP-317E">BP-317E</option>
+                    <option value="PE-010">PE-010</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="l_materialOtro">Si es “Otro”, especificar</label>
+                  <input id="l_materialOtro" name="l_materialOtro" type="text" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div>
+                  <label class="req">Tipo de sellado</label>
+                  <div class="seg">
+                    <input id="l_induccion" type="radio" name="l_sellado" value="Inducción" required />
+                    <label for="l_induccion">Inducción</label>
+
+                    <input id="l_presion" type="radio" name="l_sellado" value="Presión" />
+                    <label for="l_presion">Presión</label>
+
+                    <input id="l_otroSellado" type="radio" name="l_sellado" value="Otro" />
+                    <label for="l_otroSellado">Otro</label>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="l_contenido">Contenido del frasco</label>
+                  <select id="l_contenido" name="l_contenido">
+                    <option value="Tabletas / cápsulas" selected>Tabletas / cápsulas</option>
+                    <option value="Polvo">Polvo</option>
+                    <option value="Líquido">Líquido</option>
+                    <option value="Cosmético">Cosmético</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div>
+                  <label>Requisitos (checks)</label>
+                  <div class="checks">
+                    <div class="check">
+                      <input type="checkbox" id="l_tamper" name="l_req" value="Tamper evident" checked />
+                      <div><b>Tamper evident</b><small>Debe evidenciar apertura.</small></div>
+                    </div>
+                    <div class="check">
+                      <input type="checkbox" id="l_barrera" name="l_req" value="Barrera humedad/oxígeno" />
+                      <div><b>Barrera</b><small>Humedad / oxígeno si aplica.</small></div>
+                    </div>
+                    <div class="check">
+                      <input type="checkbox" id="l_medico" name="l_req" value="Uso farmacéutico" />
+                      <div><b>Farmacéutico</b><small>Requisitos más estrictos.</small></div>
+                    </div>
+                    <div class="check">
+                      <input type="checkbox" id="l_alimentos" name="l_req" value="Apto alimentos" />
+                      <div><b>Apto alimentos</b><small>Si aplica normativas.</small></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="l_impresion">Impresión en liner</label>
+                  <select id="l_impresion" name="l_impresion">
+                    <option value="Sin impresión" selected>Sin impresión</option>
+                    <option value="1 color">1 color</option>
+                    <option value="2 colores">2 colores</option>
+                    <option value="Full color">Full color</option>
+                  </select>
+
+                  <div style="height:10px"></div>
+
+                  <label for="l_textoImpreso">Texto/arte impreso (si aplica)</label>
+                  <textarea id="l_textoImpreso" name="l_textoImpreso"></textarea>
+                </div>
+              </div>
+
+              <div class="row">
+                <div>
+                  <label for="l_cantidad">Cantidad requerida</label>
+                  <input id="l_cantidad" name="l_cantidad" type="number" min="0" step="1" />
+                </div>
+                <div>
+                  <label for="l_pruebas">Pruebas requeridas</label>
+                  <select id="l_pruebas" name="l_pruebas">
+                    <option value="Sellado básico" selected>Sellado básico</option>
+                    <option value="Hermeticidad / fugas">Hermeticidad / fugas</option>
+                    <option value="Compatibilidad con contenido">Compatibilidad con contenido</option>
+                    <option value="Validación cliente">Validación cliente</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div>
+                  <label for="l_observaciones">Observaciones liner</label>
+                  <textarea id="l_observaciones" name="l_observaciones"></textarea>
+                </div>
+                <div>
+                  <label for="l_espesor">Espesor (mm / micras)</label>
+                  <input id="l_espesor" name="l_espesor" type="text" />
+                </div>
+              </div>
+            </div>
+
+            <!-- ENVÍO FINAL -->
+            <div class="section" id="secEnvioFinal">
+              <div class="section-title">
+                <span>Entrega / Envío de muestra</span>
+                <span class="badge">para todos</span>
+              </div>
+
+              <div class="row">
+                <div>
+                  <label class="req" for="fechaLimite">Fecha límite de entrega de muestra</label>
+                  <input id="fechaLimite" name="fechaLimite" type="date" required />
+                </div>
+                <div>
+                  <label for="direccionEnvio">Dirección de envío</label>
+                  <input id="direccionEnvio" name="direccionEnvio" type="text" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div>
+                  <label for="responsableRecepcion">Responsable de recepción</label>
+                  <input id="responsableRecepcion" name="responsableRecepcion" type="text" />
+                </div>
+                <div>
+                  <label for="celularRecepcion">Celular (recepción)</label>
+                  <input id="celularRecepcion" name="celularRecepcion" type="tel" />
+                </div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="alert warn" id="msgAyuda">
+                <b>Tip:</b> Completa los campos con <b>*</b> y presiona <b>Generar resumen</b>. El formulario se guarda automáticamente.
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- RESUMEN -->
+      <div class="card" id="cardResumen">
+        <div class="hd">
+          <strong>Resumen</strong>
+          <span class="pill">Producto: <span id="tipoElegido">—</span></span>
+        </div>
+        <div class="bd">
+          <div id="msgResumen" class="alert">Genera el resumen para habilitar el envío por correo.</div>
+          <div style="height:10px"></div>
+          <div class="summary" id="outResumen">Sin datos todavía…</div>
+
+          <div style="height:12px"></div>
+          <div class="row">
+            <button class="btn" id="btnCopiar" type="button">Copiar</button>
+            <button class="btn primary" id="btnEnviarCorreo" type="button" disabled>Enviar por correo</button>
+            <button class="btn" id="btnImprimir" type="button">Imprimir</button>
+          </div>
+          <div class="hint">Enviar por correo se habilita solo cuando el resumen es válido.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<script>
+(function(){
+  const $ = (id)=>document.getElementById(id);
+  const form = $("formSolicitud");
+
+  /* =========================================================
+     ✅ AQUÍ PEGAS TU BASE64 DEL LOGO (SIN "data:image/...;base64,")
+     - PNG suele empezar con: iVBORw0...
+     - JPG suele empezar con: /9j/
+  ========================================================== */
+  const SALMAPLAST_LOGO_BASE64 = "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";
+
+  // Cargar logo (detecta PNG/JPG)
+  (function loadLogo(){
+    const img = $("brandLogo");
+    const fb  = $("brandLogoFallback");
+    const b64 = (SALMAPLAST_LOGO_BASE64 || "").trim();
+
+    if(!b64 || b64 === "PEGA_AQUI_TU_BASE64"){
+      img.classList.add("hidden");
+      fb.classList.remove("hidden");
+      return;
+    }
+    let mime = "image/png";
+    if (b64.startsWith("/9j/")) mime = "image/jpeg";
+    else if (b64.startsWith("iVBORw0")) mime = "image/png";
+
+    img.src = `data:${mime};base64,${b64}`;
+    img.onerror = () => { img.classList.add("hidden"); fb.classList.remove("hidden"); };
+  })();
+
+  // Fecha default = hoy
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth()+1).padStart(2,'0');
+  const dd = String(today.getDate()).padStart(2,'0');
+  $("fechaSolicitud").value = `${yyyy}-${mm}-${dd}`;
+
+  const secTermo = $("secTermo");
+  const secPrec  = $("secPrecinto");
+  const secLiner = $("secLiner");
+
+  const estadoForm = $("estadoForm");
+  const tipoElegido = $("tipoElegido");
+  const msgResumen = $("msgResumen");
+  const outResumen = $("outResumen");
+  const btnEnviarCorreo = $("btnEnviarCorreo");
+
+  const secTermoFunda = $("secTermoFunda");
+  const secTermoPrecinto = $("secTermoPrecinto");
+  const tTipoTermo = $("t_tipoTermo");
+
+  // Estado de resumen válido
+  let resumenValido = false;
+
+  function setResumenValido(val){
+    resumenValido = !!val;
+    btnEnviarCorreo.disabled = !resumenValido;
+  }
+
+  function getCheckedValues(name){
+    return [...form.querySelectorAll(`input[name="${name}"]:checked`)].map(x=>x.value);
+  }
+  function getRadioValue(name){
+    const el = form.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : "";
+  }
+  function pick(obj, key){ return (obj[key] ?? "").toString().trim(); }
+
+  function disableRequired(sec){
+    sec.querySelectorAll("[required]").forEach(el => {
+      el.dataset.wasRequired = "1";
+      el.removeAttribute("required");
+    });
+  }
+  function enableRequired(sec){
+    sec.querySelectorAll("[data-was-required='1']").forEach(el => {
+      el.setAttribute("required","required");
+      delete el.dataset.wasRequired;
+    });
+  }
+
+  function showProductSection(tipo){
+    secTermo.classList.add("hidden");
+    secPrec.classList.add("hidden");
+    secLiner.classList.add("hidden");
+
+    disableRequired(secTermo);
+    disableRequired(secPrec);
+    disableRequired(secLiner);
+
+    if(tipo === "Termoencogible"){
+      secTermo.classList.remove("hidden");
+      enableRequired(secTermo);
+    } else if(tipo === "Precintos de seguridad"){
+      secPrec.classList.remove("hidden");
+      enableRequired(secPrec);
+    } else if(tipo === "Liner"){
+      secLiner.classList.remove("hidden");
+      enableRequired(secLiner);
+    }
+
+    tipoElegido.textContent = tipo || "—";
+  }
+
+  // TERMO: FUNDA vs PRECINTO TERMO
+  function syncTipoTermo(){
+    const val = tTipoTermo.value;
+    const isPrecinto = (val === "Precinto termoencogible");
+    secTermoFunda.classList.toggle("hidden", isPrecinto);
+    secTermoPrecinto.classList.toggle("hidden", !isPrecinto);
+
+    const falda = $("tp_falda");
+    const pestana = $("tp_pestana");
+    if(isPrecinto){
+      falda.setAttribute("required","required");
+      pestana.setAttribute("required","required");
+    } else {
+      falda.removeAttribute("required"); falda.value = "";
+      pestana.removeAttribute("required"); pestana.value = "";
+    }
+  }
+  tTipoTermo.addEventListener("change", ()=>{ syncTipoTermo(); invalidateResumen(); });
+
+  // TERMO: Material "Otros"
+  const matSel = $("t_material");
+  const matWrap = $("t_material_otros_wrap");
+  const matOtro = $("t_material_otros");
+  function syncMaterialOtros(){
+    const isOtros = matSel.value === "Otros";
+    matWrap.classList.toggle("hidden", !isOtros);
+    if(isOtros) matOtro.setAttribute("required","required");
+    else { matOtro.removeAttribute("required"); matOtro.value = ""; }
+  }
+  matSel.addEventListener("change", ()=>{ syncMaterialOtros(); invalidateResumen(); });
+
+  // TERMO: "Se termoencoge con" Otros
+  const termoConSel = $("t_termoCon");
+  const termoConWrap = $("t_termoCon_otros_wrap");
+  const termoConOtro = $("t_termoCon_otros");
+  function syncTermoConOtros(){
+    const isOtros = termoConSel.value === "Otros";
+    termoConWrap.classList.toggle("hidden", !isOtros);
+    if(isOtros) termoConOtro.setAttribute("required","required");
+    else { termoConOtro.removeAttribute("required"); termoConOtro.value = ""; }
+  }
+  termoConSel.addEventListener("change", ()=>{ syncTermoConOtros(); invalidateResumen(); });
+
+  // TERMO: Microperforado -> si Sí, cantidad/patrón requerido
+  const microWrap = $("t_micro_wrap");
+  const microCant = $("t_micro_cantidad");
+  function syncMicro(){
+    const val = getRadioValue("t_micro");
+    const on = (val === "Sí");
+    microWrap.classList.toggle("hidden", !on);
+    if(on) microCant.setAttribute("required","required");
+    else { microCant.removeAttribute("required"); microCant.value = ""; }
+  }
+  form.querySelectorAll("input[name='t_micro']").forEach(r=>r.addEventListener("change", ()=>{ syncMicro(); invalidateResumen(); }));
+
+  // TERMO: Grafilado -> si no es "No", detalle requerido
+  const grafSel = $("t_grafiladoTipo");
+  const grafWrap = $("t_grafilado_det_wrap");
+  const grafDet  = $("t_grafilado_detalle");
+  function syncGrafilado(){
+    const on = (grafSel.value !== "No");
+    grafWrap.classList.toggle("hidden", !on);
+    if(on) grafDet.setAttribute("required","required");
+    else { grafDet.removeAttribute("required"); grafDet.value = ""; }
+  }
+  grafSel.addEventListener("change", ()=>{ syncGrafilado(); invalidateResumen(); });
+
+  // Precintos de seguridad: modelo "Otros"
+  const psModelo = $("ps_modelo");
+  const psWrap = $("ps_modelo_otros_wrap");
+  const psOtro = $("ps_modelo_otros");
+  function syncPrecintoSegOtros(){
+    const isOtros = psModelo.value === "Otros";
+    psWrap.classList.toggle("hidden", !isOtros);
+    if(isOtros) psOtro.setAttribute("required","required");
+    else { psOtro.removeAttribute("required"); psOtro.value = ""; }
+  }
+  psModelo.addEventListener("change", ()=>{ syncPrecintoSegOtros(); invalidateResumen(); });
+
+  // Liner: material Otro -> requerido si selecciona Otro
+  const lMat = $("l_materialCodigo");
+  const lOtro = $("l_materialOtro");
+  function syncLinerOtro(){
+    const on = (lMat.value === "Otro");
+    if(on) lOtro.setAttribute("required","required");
+    else { lOtro.removeAttribute("required"); lOtro.value=""; }
+  }
+  lMat.addEventListener("change", ()=>{ syncLinerOtro(); invalidateResumen(); });
+
+  function validateBasics(){
+    const ok = form.checkValidity();
+    estadoForm.textContent = ok ? "Listo" : "Pendiente";
+    estadoForm.style.color = ok ? "var(--ok)" : "var(--blue)";
+    return ok;
+  }
+
+  function buildSummary(){
+    const fd = new FormData(form);
+    const obj = {};
+    fd.forEach((v,k)=>{
+      if(obj[k]){
+        if(Array.isArray(obj[k])) obj[k].push(v);
+        else obj[k] = [obj[k], v];
+      } else obj[k] = v;
+    });
+
+    obj.tipoProducto = getRadioValue("tipoProducto");
+    obj.t_experiencia = getRadioValue("t_experiencia");
+    obj.t_muestraFisica = getRadioValue("t_muestraFisica");
+    obj.t_aplicador = getRadioValue("t_aplicador");
+    obj.t_taca = getRadioValue("t_taca");
+    obj.t_micro = getRadioValue("t_micro");
+    obj.ps_numeracion = getRadioValue("ps_numeracion");
+    obj.l_sellado = getRadioValue("l_sellado");
+
+    obj.t_funda_checks = getCheckedValues("t_funda_checks").join(", ");
+    obj.ps_personalizacion = getCheckedValues("ps_personalizacion").join(", ");
+    obj.l_req = getCheckedValues("l_req").join(", ");
+
+    const tipo = pick(obj,"tipoProducto");
+    const lines = [];
+
+    lines.push("=== FORMULARIO DE SOLICITUD (SALMAPLAST) ===");
+    lines.push(`Fecha: ${pick(obj,"fechaSolicitud")}`);
+    lines.push(`Ejecutiva a cargo: ${pick(obj,"ejecutiva")}`);
+    lines.push(`Solicitante: ${pick(obj,"solicitante")}`);
+    lines.push(`Cliente/Empresa: ${pick(obj,"empresa")}`);
+    lines.push(`Contacto: ${pick(obj,"contacto") || "-"}`);
+    lines.push(`OC/Referencia: ${pick(obj,"oc") || "-"}`);
+    lines.push(`Prioridad: ${pick(obj,"prioridad")}`);
+    lines.push(`Sector destinado: ${pick(obj,"sectorProducto") || "-"}`);
+    lines.push(`Tipo de producto: ${tipo || "-"}`);
+    lines.push("");
+
+    lines.push("=== DETALLE DEL PRODUCTO ===");
+
+    if(tipo === "Termoencogible"){
+      const material = (pick(obj,"t_material")==="Otros")
+        ? `Otros: ${pick(obj,"t_material_otros") || "-"}`
+        : pick(obj,"t_material");
+
+      const termoCon = (pick(obj,"t_termoCon")==="Otros")
+        ? `Otros: ${pick(obj,"t_termoCon_otros") || "-"}`
+        : pick(obj,"t_termoCon");
+
+      lines.push("Producto: TERMOENCOGIBLE");
+      lines.push(`Subtipo: ${pick(obj,"t_tipoTermo")}`);
+      lines.push(`Tipo de lámina: ${pick(obj,"t_laminaTipo")}`);
+      lines.push(`Experiencia cliente: ${pick(obj,"t_experiencia") || "-"}`);
+      lines.push(`Muestra física impresa: ${pick(obj,"t_muestraFisica") || "-"}`);
+      lines.push(`Se termoencoge con: ${termoCon || "-"}`);
+      lines.push(`Aplicador de etiquetas: ${pick(obj,"t_aplicador") || "-"}`);
+      lines.push(`Tipo aplicación/sellado: ${pick(obj,"t_selladoTipo")}`);
+      lines.push(`¿Imprimir TACA?: ${pick(obj,"t_taca") || "-"}`);
+
+      lines.push(`Medidas: Ancho ${pick(obj,"t_ancho")} mm | Avance ${pick(obj,"t_avance")} mm`);
+      lines.push(`Material: ${material}`);
+      lines.push(`Calibre/Espesor: ${pick(obj,"t_calibre")}`);
+      lines.push(`Colores a imprimir: ${pick(obj,"t_colores")}`);
+      lines.push(`Sistema de color: ${pick(obj,"t_sistemaColor")}`);
+
+      if(pick(obj,"t_tipoTermo")==="Funda"){
+        lines.push(`Tratamientos (funda): ${pick(obj,"t_funda_checks") || "-"}`);
+        lines.push(`Envase: ${pick(obj,"t_envase") || "-"}`);
+        lines.push(`Envase físico para prueba: ${pick(obj,"t_envaseDisponibilidad") || "-"}`);
+      } else {
+        lines.push("Detalle Precinto termoencogible:");
+        lines.push(`- Falda: ${pick(obj,"tp_falda")} mm`);
+        lines.push(`- Pestaña: ${pick(obj,"tp_pestana")} mm`);
+        lines.push(`- Tipo: ${pick(obj,"tp_tipoPrecinto") || "-"}`);
+        lines.push(`- Obs: ${pick(obj,"tp_obs") || "-"}`);
+      }
+
+      lines.push(`Grafilado: ${pick(obj,"t_grafiladoTipo") || "-"}`);
+      if(pick(obj,"t_grafiladoTipo") && pick(obj,"t_grafiladoTipo") !== "No"){
+        lines.push(`Detalle grafilado: ${pick(obj,"t_grafilado_detalle") || "-"}`);
+      }
+
+      lines.push(`Microperforado: ${pick(obj,"t_micro") || "-"}`);
+      if(pick(obj,"t_micro")==="Sí"){
+        lines.push(`Microperforado (cantidad/patrón): ${pick(obj,"t_micro_cantidad") || "-"}`);
+      }
+
+      lines.push(`Tipo de muestra: ${pick(obj,"t_muestraTipo") || "-"}`);
+      lines.push(`Prueba de túnel/encogido: ${pick(obj,"t_pruebaTunel") || "-"}`);
+      lines.push(`Cantidad de muestra: ${pick(obj,"t_cantidadMuestra") || "-"}`);
+      lines.push(`Obs. termoencogible: ${pick(obj,"t_observaciones") || "-"}`);
+    }
+    else if(tipo === "Precintos de seguridad"){
+      const modelo = (pick(obj,"ps_modelo")==="Otros")
+        ? `Otros: ${pick(obj,"ps_modelo_otros") || "-"}`
+        : pick(obj,"ps_modelo");
+
+      lines.push("Producto: PRECINTOS DE SEGURIDAD");
+      lines.push(`Modelo: ${modelo}`);
+      lines.push(`Color: ${pick(obj,"ps_color")}`);
+      lines.push(`Calibre de cable: ${pick(obj,"ps_cable")}`);
+      lines.push(`Cantidad: ${pick(obj,"ps_cantidad") || "-"}`);
+      lines.push(`Numeración: ${pick(obj,"ps_numeracion") || "-"}`);
+      lines.push(`Personalización: ${pick(obj,"ps_personalizacion") || "-"}`);
+      lines.push(`Nivel seguridad: ${pick(obj,"ps_seguridad") || "-"}`);
+      lines.push(`Resistencia (1-5): ${pick(obj,"ps_resistencia") || "-"}`);
+      lines.push(`Detalle: ${pick(obj,"ps_detalle") || "-"}`);
+      lines.push(`Obs. precintos: ${pick(obj,"ps_obs") || "-"}`);
+    }
+    else if(tipo === "Liner"){
+      const mat = pick(obj,"l_materialCodigo")==="Otro"
+        ? `Otro: ${pick(obj,"l_materialOtro") || "-"}`
+        : pick(obj,"l_materialCodigo");
+
+      lines.push("Producto: LINER");
+      lines.push(`Diámetro: ${pick(obj,"l_diametro")} mm`);
+      lines.push(`Tipo de envase: ${pick(obj,"l_tipoEnvase")}`);
+      lines.push(`Material (código): ${mat}`);
+      lines.push(`Tipo de sellado: ${pick(obj,"l_sellado") || "-"}`);
+      lines.push(`Contenido frasco: ${pick(obj,"l_contenido") || "-"}`);
+      lines.push(`Requisitos: ${pick(obj,"l_req") || "-"}`);
+      lines.push(`Impresión: ${pick(obj,"l_impresion") || "-"}`);
+      lines.push(`Texto/arte: ${pick(obj,"l_textoImpreso") || "-"}`);
+      lines.push(`Cantidad: ${pick(obj,"l_cantidad") || "-"}`);
+      lines.push(`Pruebas: ${pick(obj,"l_pruebas") || "-"}`);
+      lines.push(`Espesor: ${pick(obj,"l_espesor") || "-"}`);
+      lines.push(`Obs. liner: ${pick(obj,"l_observaciones") || "-"}`);
+    } else {
+      lines.push("Selecciona un tipo de producto para completar el detalle.");
+    }
+
+    lines.push("");
+    lines.push("=== ENTREGA / ENVÍO DE MUESTRA ===");
+    lines.push(`Fecha límite: ${pick(obj,"fechaLimite")}`);
+    lines.push(`Dirección: ${pick(obj,"direccionEnvio") || "-"}`);
+    lines.push(`Recepción: ${pick(obj,"responsableRecepcion") || "-"}`);
+    lines.push(`Celular recepción: ${pick(obj,"celularRecepcion") || "-"}`);
+
+    lines.push("");
+    lines.push("=== OBSERVACIONES GENERALES ===");
+    lines.push(pick(obj,"observacionesGenerales") || "-");
+
+    return lines.join("\n");
+  }
+
+  function isSummaryValid(text){
+    const t = (text || "").trim();
+    if(!t) return false;
+    if(t.includes("Sin datos")) return false;
+    // mínimo para evitar enviar "casi vacío"
+    if(t.length < 120) return false;
+    // debe tener secciones clave
+    const must = ["FORMULARIO DE SOLICITUD", "DETALLE DEL PRODUCTO", "ENTREGA / ENVÍO DE MUESTRA"];
+    return must.every(m => t.includes(m));
+  }
+
+  function invalidateResumen(){
+    setResumenValido(false);
+    // no borramos el texto por si quieren verlo, solo deshabilitamos envío hasta regenerar
+    if(msgResumen && resumenValido === false){
+      msgResumen.className = "alert warn";
+      msgResumen.innerHTML = "Editaste el formulario. Vuelve a <b>Generar resumen</b> para habilitar el envío por correo.";
+    }
+  }
+
+  // Producto: mostrar secciones
+  form.querySelectorAll("input[name='tipoProducto']").forEach(r=>{
+    r.addEventListener("change", ()=>{
+      showProductSection(r.value);
+      syncMaterialOtros();
+      syncTermoConOtros();
+      syncMicro();
+      syncGrafilado();
+      syncPrecintoSegOtros();
+      syncTipoTermo();
+      syncLinerOtro();
+      validateBasics();
+      invalidateResumen();
+    });
+  });
+
+  // Botón generar
+  $("btnGenerar").addEventListener("click", ()=>{
+    syncMaterialOtros();
+    syncTermoConOtros();
+    syncMicro();
+    syncGrafilado();
+    syncPrecintoSegOtros();
+    syncTipoTermo();
+    syncLinerOtro();
+
+    const ok = validateBasics();
+    const resumen = buildSummary();
+    outResumen.textContent = resumen;
+
+    if(ok && isSummaryValid(resumen)){
+      msgResumen.className = "alert ok";
+      msgResumen.innerHTML = "<b>Listo:</b> resumen generado y válido. Ya puedes enviar por correo.";
+      setResumenValido(true);
+    } else if(!ok){
+      msgResumen.className = "alert bad";
+      msgResumen.innerHTML = "<b>No se generó resumen válido:</b> faltan campos obligatorios (según el producto).";
+      setResumenValido(false);
+      form.reportValidity();
+    } else {
+      msgResumen.className = "alert warn";
+      msgResumen.innerHTML = "<b>Resumen incompleto:</b> revisa datos clave (tipo producto / envío / etc.) y genera nuevamente.";
+      setResumenValido(false);
+    }
+  });
+
+  $("btnLimpiar").addEventListener("click", ()=>{
+    form.reset();
+    $("fechaSolicitud").value = `${yyyy}-${mm}-${dd}`;
+    showProductSection("");
+
+    syncMaterialOtros();
+    syncTermoConOtros();
+    syncMicro();
+    syncGrafilado();
+    syncPrecintoSegOtros();
+    syncTipoTermo();
+    syncLinerOtro();
+
+    tipoElegido.textContent = "—";
+    msgResumen.className = "alert";
+    msgResumen.textContent = "Genera el resumen para habilitar el envío por correo.";
+    outResumen.textContent = "Sin datos todavía…";
+    $("estadoForm").textContent = "Pendiente";
+    $("estadoForm").style.color = "var(--blue)";
+    setResumenValido(false);
+
+    // borrar guardado
+    localStorage.removeItem("salmaplast_form_v1");
+  });
+
+  $("btnCopiar").addEventListener("click", async ()=>{
+    const text = outResumen.textContent || "";
+    if(!isSummaryValid(text)){
+      msgResumen.className = "alert warn";
+      msgResumen.innerHTML = "<b>Ojo:</b> primero genera un resumen válido.";
+      return;
+    }
+    try{
+      await navigator.clipboard.writeText(text);
+      msgResumen.className = "alert ok";
+      msgResumen.innerHTML = "<b>Copiado:</b> el resumen está en tu portapapeles.";
+    } catch(e){
+      msgResumen.className = "alert warn";
+      msgResumen.innerHTML = "<b>No se pudo copiar automáticamente.</b> Copia manualmente el resumen.";
+    }
+  });
+
+  $("btnImprimir").addEventListener("click", ()=>{
+    if(!isSummaryValid(outResumen.textContent)) $("btnGenerar").click();
+    if(isSummaryValid(outResumen.textContent)) window.print();
+  });
+
+  $("btnPDF").addEventListener("click", ()=>{
+    if(!isSummaryValid(outResumen.textContent)) $("btnGenerar").click();
+    if(isSummaryValid(outResumen.textContent)) window.print();
+  });
+
+  // ✅ Enviar correo (solo si resumen válido y formulario válido)
+  btnEnviarCorreo.addEventListener("click", ()=>{
+    // doble seguridad
+    const okForm = form.checkValidity();
+    if(!okForm){
+      msgResumen.className = "alert bad";
+      msgResumen.innerHTML = "<b>No se puede enviar:</b> faltan campos obligatorios.";
+      setResumenValido(false);
+      form.reportValidity();
+      return;
+    }
+
+    const resumen = (outResumen.textContent || "").trim();
+    if(!isSummaryValid(resumen)){
+      msgResumen.className = "alert warn";
+      msgResumen.innerHTML = "<b>No se puede enviar:</b> primero genera un resumen válido.";
+      setResumenValido(false);
+      return;
+    }
+
+    // Aquí puedes poner correo fijo si deseas:
+    const to = ""; // Ej: "muestras@salmaplast.com"
+    const subject = "SALMAPLAST - Formulario de Solicitud";
+    const body = resumen;
+
+    const mailto = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    msgResumen.className = "alert ok";
+    msgResumen.innerHTML = "<b>Listo:</b> se abrirá tu correo con el resumen cargado.";
+    window.location.href = mailto;
+  });
+
+  // Validación en vivo + invalidar resumen cuando cambian cosas
+  form.addEventListener("input", ()=>{
+    validateBasics();
+    invalidateResumen();
+  });
+  form.addEventListener("change", ()=>{
+    validateBasics();
+    syncMaterialOtros();
+    syncTermoConOtros();
+    syncMicro();
+    syncGrafilado();
+    syncPrecintoSegOtros();
+    syncTipoTermo();
+    syncLinerOtro();
+    invalidateResumen();
+  });
+
+  /* ========= AUTO-GUARDADO (localStorage) ========= */
+  const STORAGE_KEY = "salmaplast_form_v1";
+
+  function saveFormToStorage(){
+    const data = {};
+    const fields = form.querySelectorAll("input, select, textarea");
+
+    fields.forEach(el => {
+      if(!el.id && !el.name) return;
+      const key = el.id || el.name;
+
+      if(el.type === "radio"){
+        // guardamos por name (grupo) para que sea estable
+        if(el.checked) data[el.name] = el.value;
+      } else if(el.type === "checkbox"){
+        data[key] = el.checked;
+      } else {
+        data[key] = el.value;
+      }
+    });
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function loadFormFromStorage(){
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return;
+
+    let data;
+    try { data = JSON.parse(raw); } catch { return; }
+
+    // restaurar inputs, selects, textareas
+    const fields = form.querySelectorAll("input, select, textarea");
+
+    fields.forEach(el => {
+      const key = el.id || el.name;
+      if(!key) return;
+
+      if(el.type === "radio"){
+        // radios guardados por name
+        const saved = data[el.name];
+        if(saved && el.value === saved) el.checked = true;
+      } else if(el.type === "checkbox"){
+        if(key in data) el.checked = !!data[key];
+      } else {
+        if(key in data) el.value = data[key];
+      }
+    });
+
+    // refrescar UI
+    const tipo = (form.querySelector("input[name='tipoProducto']:checked") || {}).value || "";
+    showProductSection(tipo);
+
+    syncMaterialOtros();
+    syncTermoConOtros();
+    syncMicro();
+    syncGrafilado();
+    syncPrecintoSegOtros();
+    syncTipoTermo();
+    syncLinerOtro();
+    validateBasics();
+
+    // al cargar, el resumen NO se considera válido hasta regenerar
+    setResumenValido(false);
+  }
+
+  // guardar en cada cambio (suave con debounce)
+  let saveTimer = null;
+  function scheduleSave(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveFormToStorage, 200);
+  }
+  form.addEventListener("input", scheduleSave);
+  form.addEventListener("change", scheduleSave);
+
+  // Estado inicial
+  showProductSection("");
+  syncMaterialOtros();
+  syncTermoConOtros();
+  syncMicro();
+  syncGrafilado();
+  syncPrecintoSegOtros();
+  syncTipoTermo();
+  syncLinerOtro();
+  validateBasics();
+  setResumenValido(false);
+
+  // Cargar guardado al abrir
+  loadFormFromStorage();
+
+})();
+</script>
+</body>
+</html>
